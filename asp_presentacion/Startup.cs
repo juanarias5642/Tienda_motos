@@ -22,7 +22,7 @@ namespace asp_presentacion
             services.AddScoped<IReferenciasPresentacion, ReferenciasPresentacion>();
             services.AddScoped<IMotocicletasPresentacion, MotocicletasPresentacion>();
             services.AddScoped<IFacturasPresentacion, FacturasPresentacion>();
-            services.AddScoped<IFacturasPresentacion, FacturasPresentacion>();
+            services.AddScoped<IFact_motosPresentacion, Fact_motosPresentacion>();
 
 
 

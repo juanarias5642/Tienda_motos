@@ -10,5 +10,5 @@ namespace lib_presentaciones.Interfaces
         Task<Fact_motos?> Modificar(Fact_motos? entidad);
         Task<Fact_motos?> Borrar(Fact_motos? entidad);
     }
-}   }
-}
+}   
+
