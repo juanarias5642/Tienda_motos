@@ -1,0 +1,213 @@
+﻿@page
+@model asp_presentacion.Pages.Ventanas.FacturasModel
+@{
+    ViewData["Titulo"] = "Facturas";
+}
+<center>
+    <div>
+        <form method="POST"
+              enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+
+            <div align="left">
+                <h3>Facturas</h3>
+            </div>
+            <div align="left"
+                 class="bt_panel_buttons">
+                <input type="submit"
+                       value="Refrescar"
+                       asp-page-handler="BtRefrescar"
+                       class="btn btn-secondary"
+                       disabled="@(Model.Accion != lib_dominio.Nucleo.Enumerables.Ventanas.Listas)" />
+                <input type="submit"
+                       value="Nuevo"
+                       asp-page-handler="BtNuevo"
+                       class="btn btn-secondary"
+                       disabled="@(Model.Accion != lib_dominio.Nucleo.Enumerables.Ventanas.Listas)" />
+                <input type="submit"
+                       value="Guardar"
+                       asp-page-handler="BtGuardar"
+                       class="btn btn-secondary"
+                       disabled="@(Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Listas)" />
+                <input type="submit"
+                       value="Cancelar"
+                       asp-page-handler="BtCancelar"
+                       class="btn btn-secondary"
+                       disabled="@(Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Listas)" />
+            </div>
+
+            @if (Model.Accion != lib_dominio.Nucleo.Enumerables.Ventanas.Listas ||
+            Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Borrar)
+            {
+                <input type="hidden"
+                       asp-for="@Model.Actual!.Id" />
+            }
+            @if (Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Borrar)
+            {
+                <input type="hidden"
+                       asp-for="@Model.Actual!.Cod_factura" />
+                <input type="hidden"
+                       asp-for="@Model.Actual!.Fecha" />
+                <input type="hidden"
+                       asp-for="@Model.Actual!.Total" />
+                <input type="hidden"
+                       asp-for="@Model.Actual!.Persona" />
+            }
+
+            @if (Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Editar)
+            {
+                <div class="containers_vn panel panel-default">
+                    <h3>Distribuidor</h3>
+
+                    <div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label">
+                                Modelo
+                            </label>
+                            <div class="col-lg-6">
+                                <input id="nmModelo"
+                                       class="cts_forms form-control"
+                                       asp-for="@Model.Actual!.Cod_factura" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label">
+                                Cilindraje
+                            </label>
+                            <div class="col-lg-6">
+                                <input id="nmCilindraje"
+                                       class="cts_forms form-control"
+                                       asp-for="@Model.Actual!.Fecha" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label">
+                                Precio
+                            </label>
+                            <div class="col-lg-6">
+                                <input id="nmPrecio"
+                                       class="cts_forms form-control"
+                                       asp-for="@Model.Actual!.Total" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label">
+                                Color
+                            </label>
+                            <div class="col-lg-6">
+                                <input id="nmColor"
+                                       class="cts_forms form-control"
+                                       asp-for="@Model.Actual!.Persona" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @if (ViewData.ContainsKey("Mensaje"))
+            {
+                <input type="hidden"
+                       asp-for="@Model.Accion" />
+                @await Html.PartialAsync("../Emergentes/Mensajes.cshtml")
+                ;
+            }
+
+            @if (Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Borrar)
+            {
+                <div class='popup'>
+                    <div class='pp_del_inner'>
+                        <div style='width:95%'>
+                            <h2 align="left">
+                                Mensaje
+                            </h2>
+
+                            <h4 align="left">
+                                Desea borrar la entidad?
+                            </h4>
+                            <h6 align="left">
+                                @Model.Actual!.Cod_factura,
+                                @Model.Actual!.Fecha
+                            </h6>
+                            <br />
+                            <br />
+                            <input type="submit"
+                                   value="Borrar"
+                                   asp-page-handler="BtBorrar"
+                                   class="btn btn-secondary" />
+                            <input type="submit"
+                                   value="Cerrar"
+                                   asp-page-handler="BtCancelar"
+                                   class="btn btn-secondary" />
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @if (Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Listas ||
+            Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Borrar)
+            {
+                <input id="flNombre"
+                       class="cts_forms form-control"
+                       asp-for="@Model.Filtro!.Cod_factura"
+                       placeholder="Nombre" />
+                <br />
+
+                <div class="containers_vn panel panel-default">
+                    <table class="tb_data table table-striped table-bordered table-hover">
+                        <tr>
+                            <th>
+                                Cod_factura
+                            </th>
+                            <th>
+                                Fecha
+                            </th>
+                            <th>
+                                Total
+                            </th>
+                            <th class="cl_actions">
+                                Persona
+                            </th>
+                            <th>
+                                Accion
+                            </th>
+                        </tr>
+                        @if (Model != null && Model.Lista != null)
+                        {
+                            @foreach (var elemento in Model.Lista)
+                            {
+                                <tr>
+                                    <td>
+                                        @elemento.Cod_factura
+                                    </td>
+                                    <td>
+                                        @elemento.Fecha
+                                    </td>
+                                    <td>
+                                        @elemento.Total
+                                    </td>
+                                    <td class="cl_hidden">
+                                        @elemento.Persona
+                                    </td>
+
+                                    <td>
+                                        <input type="submit"
+                                               value="Modicar"
+                                               asp-page-handler="BtModificar"
+                                               class="btn btn-secondary"
+                                               asp-route-data="@elemento.Id" />
+                                        <input type="submit"
+                                               value="Borrar"
+                                               asp-page-handler="BtBorrarVal"
+                                               class="btn btn-secondary"
+                                               asp-route-data="@elemento.Id" />
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </table>
+                </div>
+            }
+        </form>
+    </div>
+</center>
+
