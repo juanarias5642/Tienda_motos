@@ -21,7 +21,7 @@ namespace lib_dominio.Entidades
         public Facturas? _Factura { get; set; }
 
         [ForeignKey("Moto")]
-        public Motocicletas? _Moto { get; set; }
+        public Motocicletas? _Moto { get; set; } = new();
 
     }
 }

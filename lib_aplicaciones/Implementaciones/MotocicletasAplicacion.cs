@@ -57,7 +57,7 @@ namespace lib_aplicaciones.Implementaciones
         public List<Motocicletas> PorCodigo(Motocicletas? entidad)
         {
             return this.IConexion!.Motocicletas!
-                .Where(x => x.Modelo!.Contains(entidad!.Modelo!))
+                .Where(x => x.Cod_moto!.Contains(entidad!.Cod_moto!))
                 .ToList();
         }
 
