@@ -42,7 +42,7 @@ namespace asp_presentacion.Pages.Ventanas
                     return;
                 }
 
-                Filtro!.Color = Filtro!.Color ?? "";
+                Filtro!.Cod_moto = Filtro!.Cod_moto ?? "";
 
                 Accion = Enumerables.Ventanas.Listas;
 

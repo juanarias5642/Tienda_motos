@@ -1,11 +1,15 @@
-﻿
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace lib_dominio.Entidades
 {
     public class Motocicletas
     {
         public int Id { get; set; }
+        public string Cod_moto { get; set; }
         public string? Modelo { get; set; }
         public int Cilindraje { get; set; }
         public decimal Precio { get; set; }
