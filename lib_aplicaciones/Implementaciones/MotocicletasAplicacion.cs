@@ -1,5 +1,6 @@
 ﻿using lib_aplicaciones.Interfaces;
 using lib_dominio.Entidades;
+using lib_dominio.Nucleo;
 using lib_repositorios.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,10 +9,12 @@ namespace lib_aplicaciones.Implementaciones
     public class MotocicletasAplicacion : IMotocicletasAplicacion
     {
         private IConexion? IConexion = null;
+        public IAuditoriasAplicacion? IAuditoriasAplicacion = null;
 
-        public MotocicletasAplicacion(IConexion iConexion)
+        public MotocicletasAplicacion(IConexion iConexion, IAuditoriasAplicacion iAuditoriasAplicacion)
         {
             this.IConexion = iConexion;
+            this.IAuditoriasAplicacion = iAuditoriasAplicacion;
         }
 
         public void Configurar(string StringConexion)
@@ -31,6 +34,15 @@ namespace lib_aplicaciones.Implementaciones
 
             this.IConexion!.Motocicletas!.Remove(entidad);
             this.IConexion.SaveChanges();
+            this.IAuditoriasAplicacion!.Configurar(this.IConexion.StringConnection!);
+            this.IAuditoriasAplicacion!.Guardar(new Auditorias
+            {
+                Usuario = "admin",
+                Entidad = "Motocicletas",
+                Operacion = "Borrar",
+                Datos = JsonConversor.ConvertirAString(entidad!),
+                Fecha = DateTime.Now
+            });
             return entidad;
         }
 
@@ -46,12 +58,23 @@ namespace lib_aplicaciones.Implementaciones
 
             this.IConexion!.Motocicletas!.Add(entidad);
             this.IConexion.SaveChanges();
+            this.IAuditoriasAplicacion!.Configurar(this.IConexion.StringConnection!);
+            this.IAuditoriasAplicacion!.Guardar(new Auditorias
+            {
+                Usuario = "admin",
+                Entidad = "Motocicletas",
+                Operacion = "Guardar",
+                Datos = JsonConversor.ConvertirAString(entidad!),
+                Fecha = DateTime.Now
+            });
             return entidad;
         }
 
         public List<Motocicletas> Listar()
         {
-            return this.IConexion!.Motocicletas!.Take(20).ToList();
+            return this.IConexion!.Motocicletas!
+                .Take(20)
+                .ToList();
         }
 
         public List<Motocicletas> PorCodigo(Motocicletas? entidad)
@@ -74,6 +97,15 @@ namespace lib_aplicaciones.Implementaciones
             var entry = this.IConexion!.Entry<Motocicletas>(entidad);
             entry.State = EntityState.Modified;
             this.IConexion.SaveChanges();
+            this.IAuditoriasAplicacion!.Configurar(this.IConexion.StringConnection!);
+            this.IAuditoriasAplicacion!.Guardar(new Auditorias
+            {
+                Usuario = "admin",
+                Entidad = "Motocicletas",
+                Operacion = "Modificar",
+                Datos = JsonConversor.ConvertirAString(entidad!),
+                Fecha = DateTime.Now
+            });
             return entidad;
         }
     }

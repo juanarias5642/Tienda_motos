@@ -16,6 +16,7 @@ namespace lib_dominio.Entidades
         public int Cilindraje { get; set; }
         public decimal Precio { get; set; }
         public string? Color { get; set; }
+        public string? ImagenUrl { get; set; }
         public int Tipo { get; set; }
         public int Referencia { get; set; }
         public int Marca { get; set; }
@@ -30,8 +31,8 @@ namespace lib_dominio.Entidades
         [ForeignKey("Marca")]
         public Marcas? _Marca { get; set; }
 
-        [ForeignKey("Chasis")]
-        public Chasises? _Chasis { get; set; }
+        [ForeignKey("Chasis")] public Chasises? _Chasis { get; set; }
+
 
         public List<Fact_motos> Fact_motos { get; set; }
     }

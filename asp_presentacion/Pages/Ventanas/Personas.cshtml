@@ -45,7 +45,7 @@
             @if (Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Borrar)
             {
                 <input type="hidden"
-                       asp-for="@Model.Actual!.Codigo" />
+                       asp-for="@Model.Actual!.Cedula" />
                 <input type="hidden"
                        asp-for="@Model.Actual!.Nombre" />
                 <input type="hidden"
@@ -60,12 +60,12 @@
                     <div>
                         <div class="form-group">
                             <label class="col-lg-4 control-label">
-                                Codigo
+                                Cedula
                             </label>
                             <div class="col-lg-6">
-                                <input id="nmCodigo"
+                                <input id="nmCedula"
                                        class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.Codigo" />
+                                       asp-for="@Model.Actual!.Cedula" />
                             </div>
                         </div>
                         <div class="form-group">
@@ -162,7 +162,7 @@
                             {
                                 <tr>
                                     <td>
-                                        @elemento.Codigo
+                                        @elemento.Cedula
                                     </td>
                                     <td>
                                         @elemento.Nombre

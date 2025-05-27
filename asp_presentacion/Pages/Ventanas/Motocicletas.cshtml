@@ -1,4 +1,6 @@
-﻿@page
+﻿
+@page
+
 @model asp_presentacion.Pages.Ventanas.MotocicletasModel
 @{
     ViewData["Titulo"] = "Motocicletas";
@@ -62,14 +64,26 @@
                        asp-for="@Model.Actual!.Marca" />
                 <input type="hidden"
                        asp-for="@Model.Actual!.Chasis" />
+                <input type="hidden"
+                       asp-for="@Model.Actual!.ImagenUrl" />
             }
 
             @if (Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Editar)
             {
                 <div class="containers_vn panel panel-default">
-                    <h3>Distribuidor</h3>
+                    <h3>Motocicleta</h3>
 
                     <div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label">
+                                Codigo
+                            </label>
+                            <div class="col-lg-6">
+                                <input id="nmCodigo"
+                                       class="cts_forms form-control"
+                                       asp-for="@Model.Actual!.Cod_moto" />
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label class="col-lg-4 control-label">
                                 Modelo
@@ -77,7 +91,7 @@
                             <div class="col-lg-6">
                                 <input id="nmModelo"
                                        class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.Cod_moto" />
+                                       asp-for="@Model.Actual!.Modelo" />
                             </div>
                         </div>
                         <div class="form-group">
@@ -87,7 +101,7 @@
                             <div class="col-lg-6">
                                 <input id="nmCilindraje"
                                        class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.Modelo" />
+                                       asp-for="@Model.Actual!.Cilindraje" />
                             </div>
                         </div>
                         <div class="form-group">
@@ -96,16 +110,6 @@
                             </label>
                             <div class="col-lg-6">
                                 <input id="nmPrecio"
-                                       class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.Cilindraje" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-lg-4 control-label">
-                                Color
-                            </label>
-                            <div class="col-lg-6">
-                                <input id="nmColor"
                                        class="cts_forms form-control"
                                        asp-for="@Model.Actual!.Precio" />
                             </div>
@@ -122,44 +126,63 @@
                         </div>
                         <div class="form-group">
                             <label class="col-lg-4 control-label">
-                                Color
+                                Tipo
                             </label>
                             <div class="col-lg-6">
-                                <input id="nmTipo"
-                                       class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.Tipo" />
+                                <select id="nmTipo"
+                                        class="form-control"
+                                        asp-for="@Model.Actual!.Tipo"
+                                        asp-items="@(new SelectList(Model.Tipos, "Id", "Nombre"))">
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-lg-4 control-label">
-                                Color
+                                Referencia
                             </label>
                             <div class="col-lg-6">
-                                <input id="nmReferencia"
-                                       class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.Referencia" />
+                                <select id="nmReferencia"
+                                        class="form-control"
+                                        asp-for="@Model.Actual!.Referencia"
+                                        asp-items="@(new SelectList(Model.Referencias, "Id", "Nombre"))">
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-lg-4 control-label">
-                                Color
+                                Marca
                             </label>
                             <div class="col-lg-6">
-                                <input id="nmMarca"
-                                       class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.Marca" />
+                                <select id="nmMarca"
+                                        class="form-control"
+                                        asp-for="@Model.Actual!.Marca"
+                                        asp-items="@(new SelectList(Model.Marcas, "Id", "Nombre"))">
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-lg-4 control-label">
-                                Color
+                                Chasis
                             </label>
                             <div class="col-lg-6">
-                                <input id="nmChasis"
-                                       class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.Chasis" />
+                                <select id="nmChasis"
+                                        class="form-control"
+                                        asp-for="@Model.Actual!.Chasis"
+                                        asp-items="@(new SelectList(Model.Chasises, "Id", "Nombre"))">
+                                </select>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label">Foto</label>
+                            <div class="col-lg-6">
+                                <input asp-for="FormFile" type="file" class="form-control" />
+                                @if (!string.IsNullOrEmpty(Model.Actual.ImagenUrl))
+                                {
+                                    <img src="~/Imagenes/@(System.IO.Path.GetFileName(Model.Actual.ImagenUrl))" … />
+
+                                }
+                        </div>
+                    </div>
                     </div>
                 </div>
             }
@@ -185,7 +208,7 @@
                                 Desea borrar la entidad?
                             </h4>
                             <h6 align="left">
-                                @Model.Actual!.Precio
+                                @Model.Actual!.Cod_moto,
                             </h6>
                             <br />
                             <br />
@@ -205,10 +228,10 @@
             @if (Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Listas ||
             Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Borrar)
             {
-                <input id="flNombre"
+                <input id="flCodigo"
                        class="cts_forms form-control"
                        asp-for="@Model.Filtro!.Cod_moto"
-                       placeholder="Nombre" />
+                       placeholder="Codigo" />
                 <br />
 
                 <div class="containers_vn panel panel-default">
@@ -220,26 +243,29 @@
                             <th>
                                 Modelo
                             </th>
-                            <th>
+                            <th class="cl_hidden">
                                 Cilindraje
                             </th>
-                            <th>
+                            <th class="cl_actions">
                                 Precio
                             </th>
-                            <th>
+                            <th class="cl_actions">
                                 Color
                             </th>
-                            <th>
+                            <th class="cl_actions">
                                 Tipo
                             </th>
-                            <th>
+                            <th class="cl_actions">
                                 Referencia
                             </th>
-                            <th>
+                            <th class="cl_actions">
                                 Marca
                             </th>
-                            <th>
+                            <th class="cl_actions">
                                 Chasis
+                            </th>
+                            <th class="cl_actions">
+                                Foto
                             </th>
                             <th>
                                 Accion
@@ -256,26 +282,35 @@
                                     <td>
                                         @elemento.Modelo
                                     </td>
-                                    <td>
+                                    <td class="cl_hidden">
                                         @elemento.Cilindraje
                                     </td>
-                                    <td>
+                                    <td class="cl_hidden">
                                         @elemento.Precio
                                     </td>
-                                    <td>
+                                    <td class="cl_hidden">
                                         @elemento.Color
                                     </td>
-                                    <td>
+                                    <td class="cl_hidden">
                                         @elemento.Tipo
                                     </td>
-                                    <td>
+                                    <td class="cl_hidden">
                                         @elemento.Referencia
                                     </td>
-                                    <td>
+                                    <td class="cl_hidden">
                                         @elemento.Marca
                                     </td>
-                                    <td>
+                                    <td class="cl_hidden">
                                         @elemento.Chasis
+                                    </td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(elemento.ImagenUrl))
+                                        {
+                                            <img src="~/Imagenes/@(System.IO.Path.GetFileName(elemento.ImagenUrl))" style="height:50px;" />
+
+
+
+                                        }
                                     </td>
 
                                     <td>

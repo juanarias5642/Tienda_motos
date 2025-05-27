@@ -1,5 +1,6 @@
 ﻿using lib_aplicaciones.Interfaces;
 using lib_dominio.Entidades;
+using lib_dominio.Nucleo;
 using lib_repositorios.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,11 +8,13 @@ namespace lib_aplicaciones.Implementaciones
 {
     public class ReferenciasAplicacion : IReferenciasAplicacion
     {
-        private IConexion? IConexion = null;
+        public IConexion? IConexion = null;
+        public IAuditoriasAplicacion? IAuditoriasAplicacion = null;
 
-        public ReferenciasAplicacion(IConexion iConexion)
+        public ReferenciasAplicacion(IConexion iConexion, IAuditoriasAplicacion iAuditoriasAplicacion)
         {
             this.IConexion = iConexion;
+            this.IAuditoriasAplicacion = iAuditoriasAplicacion;
         }
 
         public void Configurar(string StringConexion)
@@ -31,6 +34,15 @@ namespace lib_aplicaciones.Implementaciones
 
             this.IConexion!.Referencias!.Remove(entidad);
             this.IConexion.SaveChanges();
+            this.IAuditoriasAplicacion!.Configurar(this.IConexion.StringConnection!);
+            this.IAuditoriasAplicacion!.Guardar(new Auditorias
+            {
+                Usuario = "admin",
+                Entidad = "Referencias",
+                Operacion = "Borrar",
+                Datos = JsonConversor.ConvertirAString(entidad!),
+                Fecha = DateTime.Now
+            });
             return entidad;
         }
 
@@ -46,12 +58,23 @@ namespace lib_aplicaciones.Implementaciones
 
             this.IConexion!.Referencias!.Add(entidad);
             this.IConexion.SaveChanges();
+            this.IAuditoriasAplicacion!.Configurar(this.IConexion.StringConnection!);
+            this.IAuditoriasAplicacion!.Guardar(new Auditorias
+            {
+                Usuario = "admin",
+                Entidad = "Referencias",
+                Operacion = "Guardar",
+                Datos = JsonConversor.ConvertirAString(entidad!),
+                Fecha = DateTime.Now
+            });
             return entidad;
         }
 
         public List<Referencias> Listar()
         {
-            return this.IConexion!.Referencias!.Take(20).ToList();
+            return this.IConexion!.Referencias!
+                .Take(20)
+                .ToList();
         }
 
         public List<Referencias> PorCodigo(Referencias? entidad)
@@ -74,6 +97,15 @@ namespace lib_aplicaciones.Implementaciones
             var entry = this.IConexion!.Entry<Referencias>(entidad);
             entry.State = EntityState.Modified;
             this.IConexion.SaveChanges();
+            this.IAuditoriasAplicacion!.Configurar(this.IConexion.StringConnection!);
+            this.IAuditoriasAplicacion!.Guardar(new Auditorias
+            {
+                Usuario = "admin",
+                Entidad = "Referencias",
+                Operacion = "Modificar",
+                Datos = JsonConversor.ConvertirAString(entidad!),
+                Fecha = DateTime.Now
+            });
             return entidad;
         }
     }

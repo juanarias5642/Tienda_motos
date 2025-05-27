@@ -10,6 +10,7 @@ namespace lib_dominio.Entidades
     public class Fact_motos
     {
         public int Id { get; set; }
+        public string? Codigo { get; set; }
         public int Factura { get; set; }
         public int Moto { get; set; }
         public string? Cantidad { get; set; }

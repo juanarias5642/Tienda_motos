@@ -22,10 +22,8 @@ namespace asp_servicios
             services.Configure<IISServerOptions>(x => { x.AllowSynchronousIO = true; });
             services.AddControllers();
             services.AddEndpointsApiExplorer();
-            //services.AddSwaggerGen();
-            // Repositorios
+
             services.AddScoped<IConexion, Conexion>();
-            // Aplicaciones
             services.AddScoped<IMarcasAplicacion, MarcasAplicacion>();
             services.AddScoped<IReferenciasAplicacion, ReferenciasAplicacion>();
             services.AddScoped<ITiposAplicacion, TiposAplicacion>();
@@ -34,7 +32,8 @@ namespace asp_servicios
             services.AddScoped<IFacturasAplicacion, FacturasAplicacion>();
             services.AddScoped<IFact_motosAplicacion, Fact_motosAplicacion>();
             services.AddScoped<IMotocicletasAplicacion, MotocicletasAplicacion>();
-            // Controladores
+            services.AddScoped<IAuditoriasAplicacion, AuditoriasAplicacion>();
+
             services.AddScoped<TokenController, TokenController>();
 
             services.AddCors(o => o.AddDefaultPolicy(b => b.AllowAnyOrigin()));
@@ -44,8 +43,7 @@ namespace asp_servicios
         {
             if (env.IsDevelopment())
             {
-                //app.UseSwagger();
-                //app.UseSwaggerUI();
+
             }
             if (!app.Environment.IsDevelopment())
             {

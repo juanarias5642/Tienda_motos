@@ -1,5 +1,6 @@
 ﻿using lib_aplicaciones.Interfaces;
 using lib_dominio.Entidades;
+using lib_dominio.Nucleo;
 using lib_repositorios.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,11 +8,13 @@ namespace lib_aplicaciones.Implementaciones
 {
     public class PersonasAplicacion : IPersonasAplicacion
     {
-        private IConexion? IConexion = null;
+        public IConexion? IConexion = null;
+        public IAuditoriasAplicacion? IAuditoriasAplicacion = null;
 
-        public PersonasAplicacion(IConexion iConexion)
+        public PersonasAplicacion(IConexion iConexion, IAuditoriasAplicacion iAuditoriasAplicacion)
         {
             this.IConexion = iConexion;
+            this.IAuditoriasAplicacion = iAuditoriasAplicacion;
         }
 
         public void Configurar(string StringConexion)
@@ -31,6 +34,15 @@ namespace lib_aplicaciones.Implementaciones
 
             this.IConexion!.Personas!.Remove(entidad);
             this.IConexion.SaveChanges();
+            this.IAuditoriasAplicacion!.Configurar(this.IConexion.StringConnection!);
+            this.IAuditoriasAplicacion!.Guardar(new Auditorias
+            {
+                Usuario = "admin",
+                Entidad = "Personas",
+                Operacion = "Borrar",
+                Datos = JsonConversor.ConvertirAString(entidad!),
+                Fecha = DateTime.Now
+            });
             return entidad;
         }
 
@@ -46,18 +58,29 @@ namespace lib_aplicaciones.Implementaciones
 
             this.IConexion!.Personas!.Add(entidad);
             this.IConexion.SaveChanges();
+            this.IAuditoriasAplicacion!.Configurar(this.IConexion.StringConnection!);
+            this.IAuditoriasAplicacion!.Guardar(new Auditorias
+            {
+                Usuario = "admin",
+                Entidad = "Personas",
+                Operacion = "Guardar",
+                Datos = JsonConversor.ConvertirAString(entidad!),
+                Fecha = DateTime.Now
+            });
             return entidad;
         }
 
         public List<Personas> Listar()
         {
-            return this.IConexion!.Personas!.Take(20).ToList();
+            return this.IConexion!.Personas!
+                .Take(20)
+                .ToList();
         }
 
         public List<Personas> PorCodigo(Personas? entidad)
         {
             return this.IConexion!.Personas!
-                .Where(x => x.Nombre!.Contains(entidad!.Nombre!))
+                .Where(x => x.Cedula!.Contains(entidad!.Cedula!))
                 .ToList();
         }
 
@@ -74,6 +97,15 @@ namespace lib_aplicaciones.Implementaciones
             var entry = this.IConexion!.Entry<Personas>(entidad);
             entry.State = EntityState.Modified;
             this.IConexion.SaveChanges();
+            this.IAuditoriasAplicacion!.Configurar(this.IConexion.StringConnection!);
+            this.IAuditoriasAplicacion!.Guardar(new Auditorias
+            {
+                Usuario = "admin",
+                Entidad = "Personas",
+                Operacion = "Modificar",
+                Datos = JsonConversor.ConvertirAString(entidad!),
+                Fecha = DateTime.Now
+            });
             return entidad;
         }
     }

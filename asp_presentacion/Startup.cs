@@ -13,14 +13,13 @@ namespace asp_presentacion
         public IConfiguration Configuration { get; }
 
         public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+            => Configuration = configuration;
 
-        // Este método se llama por el runtime. Úsalo para agregar servicios al contenedor.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Inyección de dependencias para presentaciones
+
+            services.AddHttpContextAccessor();
+
             services.AddScoped<IMarcasPresentacion, MarcasPresentacion>();
             services.AddScoped<ITiposPresentacion, TiposPresentacion>();
             services.AddScoped<IChasisesPresentacion, ChasisesPresentacion>();
@@ -29,31 +28,28 @@ namespace asp_presentacion
             services.AddScoped<IMotocicletasPresentacion, MotocicletasPresentacion>();
             services.AddScoped<IFacturasPresentacion, FacturasPresentacion>();
             services.AddScoped<IFact_motosPresentacion, Fact_motosPresentacion>();
+            services.AddScoped<IAuditoriasPresentacion, AuditoriasPresentacion>();
 
-            // Añadir servicios de MVC, Razor Pages y sesiones
             services.AddControllers();
             services.AddEndpointsApiExplorer();
             services.AddRazorPages();
-            services.AddSession(options =>
+            services.AddSession(opts =>
             {
-                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                opts.IdleTimeout = TimeSpan.FromMinutes(30);
             });
+
         }
 
-        // Este método se llama por el runtime. Úsalo para configurar el pipeline HTTP.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
-            {
                 app.UseDeveloperExceptionPage();
-            }
             else
             {
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
 
-            // Sirve archivos estáticos desde wwwroot
             app.UseStaticFiles();
 
             app.UseRouting();
@@ -61,6 +57,7 @@ namespace asp_presentacion
             app.UseSession();
 
             app.UseAuthorization();
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {

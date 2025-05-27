@@ -3,18 +3,32 @@ using lib_dominio.Nucleo;
 using lib_presentaciones.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using System.Threading.Tasks;
+using System.Linq;
+using System;
 
 namespace asp_presentacion.Pages.Ventanas
 {
     public class Fact_motosModel : PageModel
     {
         private IFact_motosPresentacion? iPresentacion = null;
+        private IMotocicletasPresentacion? iMotocicletasPresentacion = null;
+        private readonly IWebHostEnvironment _env;
 
-        public Fact_motosModel(IFact_motosPresentacion iPresentacion)
+        public Fact_motosModel(IFact_motosPresentacion iPresentacion,
+            IMotocicletasPresentacion iMotocicletasPresentacion,
+
+
+            IWebHostEnvironment env)
         {
             try
             {
                 this.iPresentacion = iPresentacion;
+                this.iMotocicletasPresentacion = iMotocicletasPresentacion;
+                this._env = env;
                 Filtro = new Fact_motos();
             }
             catch (Exception ex)
@@ -23,11 +37,13 @@ namespace asp_presentacion.Pages.Ventanas
             }
         }
 
+        [BindProperty]
         public IFormFile? FormFile { get; set; }
         [BindProperty] public Enumerables.Ventanas Accion { get; set; }
         [BindProperty] public Fact_motos? Actual { get; set; }
         [BindProperty] public Fact_motos? Filtro { get; set; }
         [BindProperty] public List<Fact_motos>? Lista { get; set; }
+        [BindProperty] public List<Motocicletas>? Motocicletas { get; set; }
 
         public virtual void OnGet() { OnPostBtRefrescar(); }
 
@@ -42,7 +58,7 @@ namespace asp_presentacion.Pages.Ventanas
                     return;
                 }
 
-                Filtro!.Cantidad = Filtro!.Cantidad ?? "";
+                Filtro!.Codigo = Filtro!.Codigo ?? "";
 
                 Accion = Enumerables.Ventanas.Listas;
 
@@ -57,12 +73,28 @@ namespace asp_presentacion.Pages.Ventanas
             }
         }
 
+        private void CargarCombox()
+        {
+            try
+            {
+                var task = this.iMotocicletasPresentacion!.Listar();
+                task.Wait();
+                Motocicletas = task.Result;
+
+            }
+            catch (Exception ex)
+            {
+                LogConversor.Log(ex, ViewData!);
+            }
+        }
+
         public virtual void OnPostBtNuevo()
         {
             try
             {
                 Accion = Enumerables.Ventanas.Editar;
                 Actual = new Fact_motos();
+                CargarCombox();
             }
             catch (Exception ex)
             {
@@ -75,6 +107,7 @@ namespace asp_presentacion.Pages.Ventanas
             try
             {
                 OnPostBtRefrescar();
+                CargarCombox();
                 Accion = Enumerables.Ventanas.Editar;
                 Actual = Lista!.FirstOrDefault(x => x.Id.ToString() == data);
             }
@@ -97,6 +130,7 @@ namespace asp_presentacion.Pages.Ventanas
                     task = this.iPresentacion!.Modificar(Actual!)!;
                 task.Wait();
                 Actual = task.Result;
+
                 Accion = Enumerables.Ventanas.Listas;
                 OnPostBtRefrescar();
             }
@@ -125,6 +159,7 @@ namespace asp_presentacion.Pages.Ventanas
             try
             {
                 var task = this.iPresentacion!.Borrar(Actual!);
+                task.Wait();
                 Actual = task.Result;
                 OnPostBtRefrescar();
             }
