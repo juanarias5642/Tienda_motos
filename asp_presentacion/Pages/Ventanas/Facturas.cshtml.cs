@@ -3,8 +3,8 @@ using lib_dominio.Nucleo;
 using lib_presentaciones.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Http;             
-using Microsoft.AspNetCore.Hosting;           
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using System.Threading.Tasks;
 using System.Linq;
@@ -16,19 +16,19 @@ namespace asp_presentacion.Pages.Ventanas
     {
         private IFacturasPresentacion? iPresentacion = null;
         private IPersonasPresentacion? iPersonasPresentacion = null;
-        private readonly IWebHostEnvironment _env;  
+        private readonly IWebHostEnvironment _env;
 
         public FacturasModel(IFacturasPresentacion iPresentacion,
             IPersonasPresentacion iPersonasPresentacion,
 
 
-            IWebHostEnvironment env)             
+            IWebHostEnvironment env)
         {
             try
             {
                 this.iPresentacion = iPresentacion;
                 this.iPersonasPresentacion = iPersonasPresentacion;
-                this._env = env;                  
+                this._env = env;
                 Filtro = new Facturas();
             }
             catch (Exception ex)
@@ -38,12 +38,13 @@ namespace asp_presentacion.Pages.Ventanas
         }
 
         [BindProperty]
-        public IFormFile? FormFile { get; set; }   
+        public IFormFile? FormFile { get; set; }
         [BindProperty] public Enumerables.Ventanas Accion { get; set; }
         [BindProperty] public Facturas? Actual { get; set; }
         [BindProperty] public Facturas? Filtro { get; set; }
         [BindProperty] public List<Facturas>? Lista { get; set; }
         [BindProperty] public List<Personas>? Personas { get; set; }
+
 
         public virtual void OnGet() { OnPostBtRefrescar(); }
 
@@ -80,7 +81,6 @@ namespace asp_presentacion.Pages.Ventanas
                 var task = this.iPersonasPresentacion!.Listar();
                 task.Wait();
                 Personas = task.Result;
-
             }
             catch (Exception ex)
             {
@@ -130,7 +130,6 @@ namespace asp_presentacion.Pages.Ventanas
                     task = this.iPresentacion!.Modificar(Actual!)!;
                 task.Wait();
                 Actual = task.Result;
-
                 Accion = Enumerables.Ventanas.Listas;
                 OnPostBtRefrescar();
             }

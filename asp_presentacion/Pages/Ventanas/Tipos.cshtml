@@ -68,12 +68,15 @@
                         </div>
                         <div class="form-group">
                             <label class="col-lg-4 control-label">
-                                Alta_gama
+                                Alta gama
                             </label>
                             <div class="col-lg-6">
-                                <input id="nmAlta_gama"
-                                       class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.Alta_gama" />
+                                <select id="nmAlta_gama"
+                                        class="cts_forms form-control"
+                                        asp-for="@Model.Actual!.Alta_gama">
+                                    <option value="true" selected="@Model.Actual!.Alta_gama == true">Sí</option>
+                                    <option value="false" selected="@Model.Actual!.Alta_gama == false">No</option>
+                                </select>
                             </div>
                         </div>
                     </div>

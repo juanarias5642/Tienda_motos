@@ -9,7 +9,7 @@ namespace lib_aplicaciones.Implementaciones
     public class MotocicletasAplicacion : IMotocicletasAplicacion
     {
         private IConexion? IConexion = null;
-        public IAuditoriasAplicacion? IAuditoriasAplicacion = null;
+        private IAuditoriasAplicacion? IAuditoriasAplicacion = null;
 
         public MotocicletasAplicacion(IConexion iConexion, IAuditoriasAplicacion iAuditoriasAplicacion)
         {
@@ -17,9 +17,9 @@ namespace lib_aplicaciones.Implementaciones
             this.IAuditoriasAplicacion = iAuditoriasAplicacion;
         }
 
-        public void Configurar(string StringConexion)
+        public void Configurar(string StringConnection)
         {
-            this.IConexion!.StringConnection = StringConexion;
+            this.IConexion!.StringConnection = StringConnection;
         }
 
         public Motocicletas? Borrar(Motocicletas? entidad)
@@ -74,6 +74,7 @@ namespace lib_aplicaciones.Implementaciones
         {
             return this.IConexion!.Motocicletas!
                 .Take(20)
+                .Include(x => x._Referencia)
                 .ToList();
         }
 
@@ -81,6 +82,7 @@ namespace lib_aplicaciones.Implementaciones
         {
             return this.IConexion!.Motocicletas!
                 .Where(x => x.Cod_moto!.Contains(entidad!.Cod_moto!))
+                .Include(x => x._Referencia)
                 .ToList();
         }
 

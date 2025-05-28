@@ -13,6 +13,5 @@ namespace lib_dominio.Entidades
         public string? Nombre { get; set; }
         public string? Apellido { get; set; }
 
-        public List<Facturas> Facturas { get; set; }
     }
 }

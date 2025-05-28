@@ -16,10 +16,12 @@ namespace asp_presentacion.Pages.Ventanas
     {
         private IFact_motosPresentacion? iPresentacion = null;
         private IMotocicletasPresentacion? iMotocicletasPresentacion = null;
+        private IFacturasPresentacion? iFacturasPresentacion = null;
         private readonly IWebHostEnvironment _env;
 
         public Fact_motosModel(IFact_motosPresentacion iPresentacion,
             IMotocicletasPresentacion iMotocicletasPresentacion,
+            IFacturasPresentacion iFacturasPresentacion,
 
 
             IWebHostEnvironment env)
@@ -28,6 +30,7 @@ namespace asp_presentacion.Pages.Ventanas
             {
                 this.iPresentacion = iPresentacion;
                 this.iMotocicletasPresentacion = iMotocicletasPresentacion;
+                this.iFacturasPresentacion = iFacturasPresentacion;
                 this._env = env;
                 Filtro = new Fact_motos();
             }
@@ -44,6 +47,8 @@ namespace asp_presentacion.Pages.Ventanas
         [BindProperty] public Fact_motos? Filtro { get; set; }
         [BindProperty] public List<Fact_motos>? Lista { get; set; }
         [BindProperty] public List<Motocicletas>? Motocicletas { get; set; }
+        [BindProperty] public List<Facturas>? Facturas { get; set; }
+
 
         public virtual void OnGet() { OnPostBtRefrescar(); }
 
@@ -78,9 +83,11 @@ namespace asp_presentacion.Pages.Ventanas
             try
             {
                 var task = this.iMotocicletasPresentacion!.Listar();
+                var task1 = this.iFacturasPresentacion!.Listar();
                 task.Wait();
+                task1.Wait();
                 Motocicletas = task.Result;
-
+                Facturas = task1.Result;
             }
             catch (Exception ex)
             {
@@ -130,7 +137,6 @@ namespace asp_presentacion.Pages.Ventanas
                     task = this.iPresentacion!.Modificar(Actual!)!;
                 task.Wait();
                 Actual = task.Result;
-
                 Accion = Enumerables.Ventanas.Listas;
                 OnPostBtRefrescar();
             }

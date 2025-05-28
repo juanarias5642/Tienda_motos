@@ -45,6 +45,8 @@
             @if (Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Borrar)
             {
                 <input type="hidden"
+                       asp-for="@Model.Actual!.Codigo" />
+                <input type="hidden"
                        asp-for="@Model.Actual!.Factura" />
                 <input type="hidden"
                        asp-for="@Model.Actual!.Moto" />
@@ -66,12 +68,24 @@
                     <div>
                         <div class="form-group">
                             <label class="col-lg-4 control-label">
+                                Codigo
+                            </label>
+                            <div class="col-lg-6">
+                                <input id="nmCodigo"
+                                       class="cts_forms form-control"
+                                       asp-for="@Model.Actual!.Codigo" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label">
                                 Factura
                             </label>
                             <div class="col-lg-6">
-                                <input id="nmFactura"
-                                       class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.Factura" />
+                                <select id="nmFactura"
+                                        class="form-control"
+                                        asp-for="@Model.Actual!.Factura"
+                                        asp-items="@(new SelectList(Model.Facturas, "Id", "Cod_factura"))">
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -151,7 +165,7 @@
                                 Desea borrar la entidad?
                             </h4>
                             <h6 align="left">
-                                @Model.Actual!.Precio
+                                @Model.Actual!.Codigo
                             </h6>
                             <br />
                             <br />
@@ -171,15 +185,18 @@
             @if (Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Listas ||
             Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Borrar)
             {
-                <input id="flNombre"
+                <input id="flCodigo"
                        class="cts_forms form-control"
-                       asp-for="@Model.Filtro!.Cantidad"
-                       placeholder="Nombre" />
+                       asp-for="@Model.Filtro!.Codigo"
+                       placeholder="Codigo" />
                 <br />
 
                 <div class="containers_vn panel panel-default">
                     <table class="tb_data table table-striped table-bordered table-hover">
                         <tr>
+                            <th>
+                                Codigo
+                            </th>
                             <th>
                                 Factura
                             </th>
@@ -189,7 +206,7 @@
                             <th>
                                 Cantidad
                             </th>
-                            <th class="cl_actions">
+                            <th>
                                 Iva
                             </th>
                             <th>
@@ -208,6 +225,9 @@
                             {
                                 <tr>
                                     <td>
+                                        @elemento.Codigo
+                                    </td>
+                                    <td>
                                         @elemento.Factura
                                     </td>
                                     <td>
@@ -216,7 +236,7 @@
                                     <td>
                                         @elemento.Cantidad
                                     </td>
-                                    <td class="cl_hidden">
+                                    <td>
                                         @elemento.Iva
                                     </td>
                                     <td>

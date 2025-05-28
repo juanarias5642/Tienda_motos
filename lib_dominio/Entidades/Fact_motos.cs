@@ -13,7 +13,7 @@ namespace lib_dominio.Entidades
         public string? Codigo { get; set; }
         public int Factura { get; set; }
         public int Moto { get; set; }
-        public string? Cantidad { get; set; }
+        public int Cantidad { get; set; }
         public decimal Iva { get; set; }
         public decimal Precio { get; set; }
         public decimal Total { get; set; }
@@ -22,7 +22,7 @@ namespace lib_dominio.Entidades
         public Facturas? _Factura { get; set; }
 
         [ForeignKey("Moto")]
-        public Motocicletas? _Moto { get; set; } = new();
+        public Motocicletas? _Moto { get; set; } 
 
     }
 }

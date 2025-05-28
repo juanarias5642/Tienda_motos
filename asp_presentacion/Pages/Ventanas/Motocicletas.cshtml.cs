@@ -197,7 +197,6 @@ namespace asp_presentacion.Pages.Ventanas
             try
             {
                 var task = this.iPresentacion!.Borrar(Actual!);
-                task.Wait();
                 Actual = task.Result;
                 OnPostBtRefrescar();
             }

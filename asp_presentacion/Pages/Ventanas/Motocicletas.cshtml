@@ -243,28 +243,28 @@
                             <th>
                                 Modelo
                             </th>
-                            <th class="cl_hidden">
+                            <th >
                                 Cilindraje
                             </th>
-                            <th class="cl_actions">
+                            <th >
                                 Precio
                             </th>
-                            <th class="cl_actions">
+                            <th >
                                 Color
                             </th>
-                            <th class="cl_actions">
+                            <th >
                                 Tipo
                             </th>
                             <th class="cl_actions">
                                 Referencia
                             </th>
-                            <th class="cl_actions">
+                            <th >
                                 Marca
                             </th>
-                            <th class="cl_actions">
+                            <th >
                                 Chasis
                             </th>
-                            <th class="cl_actions">
+                            <th >
                                 Foto
                             </th>
                             <th>
@@ -282,31 +282,31 @@
                                     <td>
                                         @elemento.Modelo
                                     </td>
-                                    <td class="cl_hidden">
+                                    <td >
                                         @elemento.Cilindraje
                                     </td>
-                                    <td class="cl_hidden">
+                                    <td >
                                         @elemento.Precio
                                     </td>
-                                    <td class="cl_hidden">
+                                    <td >
                                         @elemento.Color
                                     </td>
-                                    <td class="cl_hidden">
+                                    <td >
                                         @elemento.Tipo
                                     </td>
                                     <td class="cl_hidden">
-                                        @elemento.Referencia
+                                        @elemento._Referencia!.Nombre
                                     </td>
-                                    <td class="cl_hidden">
+                                    <td >
                                         @elemento.Marca
                                     </td>
-                                    <td class="cl_hidden">
+                                    <td >
                                         @elemento.Chasis
                                     </td>
                                     <td>
                                         @if (!string.IsNullOrEmpty(elemento.ImagenUrl))
                                         {
-                                            <img src="~/Imagenes/@(System.IO.Path.GetFileName(elemento.ImagenUrl))" style="height:50px;" />
+                                            <img src="~/Imagenes/@(System.IO.Path.GetFileName(elemento.ImagenUrl))" style="height:150px;" />
 
 
 

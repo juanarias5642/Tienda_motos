@@ -74,6 +74,7 @@ namespace lib_aplicaciones.Implementaciones
         {
             return this.IConexion!.Facturas!
                 .Take(20)
+                .Include(x => x._Persona)
                 .ToList();
         }
 
@@ -81,6 +82,7 @@ namespace lib_aplicaciones.Implementaciones
         {
             return this.IConexion!.Facturas!
                 .Where(x => x.Cod_factura!.Contains(entidad!.Cod_factura!))
+                .Include(x => x._Persona)
                 .ToList();
         }
 
@@ -110,3 +112,4 @@ namespace lib_aplicaciones.Implementaciones
         }
     }
 }
+
