@@ -130,6 +130,8 @@ namespace asp_presentacion.Pages.Ventanas
             {
                 Accion = Enumerables.Ventanas.Editar;
 
+                Actual!.Total = Actual.Precio + Actual.Iva;
+
                 Task<Fact_motos>? task = null;
                 if (Actual!.Id == 0)
                     task = this.iPresentacion!.Guardar(Actual!)!;
