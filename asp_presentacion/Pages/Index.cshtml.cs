@@ -7,16 +7,19 @@ namespace asp_presentacion.Pages
     public class IndexModel : PageModel
     {
         public bool EstaLogueado = false;
-        [BindProperty] public string? Email { get; set; }
-        [BindProperty] public string? Contrasena { get; set; }
+
+        [BindProperty]
+        public string? Email { get; set; }
+
+        [BindProperty]
+        public string? Contrasena { get; set; }
 
         public void OnGet()
         {
             var variable_session = HttpContext.Session.GetString("Usuario");
-            if (!String.IsNullOrEmpty(variable_session))
+            if (!string.IsNullOrEmpty(variable_session))
             {
                 EstaLogueado = true;
-                return;
             }
         }
 
@@ -37,21 +40,32 @@ namespace asp_presentacion.Pages
         {
             try
             {
-                if (string.IsNullOrEmpty(Email) &&
-                    string.IsNullOrEmpty(Contrasena))
+                if (string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Contrasena))
                 {
                     OnPostBtClean();
                     return;
                 }
 
-                if ("admin.123" != Email + "." + Contrasena)
+                if (Contrasena != "123")
                 {
                     OnPostBtClean();
                     return;
                 }
-                ViewData["Logged"] = true;
+
+                // Guardar en sesión
                 HttpContext.Session.SetString("Usuario", Email!);
                 EstaLogueado = true;
+
+                // Redirigir según el tipo de usuario
+                if (Email!.ToLower() == "admin")
+                {
+                    HttpContext.Response.Redirect("/Index");
+                }
+                else
+                {
+                    HttpContext.Response.Redirect("Ventanas/Usuario");
+                }
+
                 OnPostBtClean();
             }
             catch (Exception ex)
@@ -59,6 +73,7 @@ namespace asp_presentacion.Pages
                 LogConversor.Log(ex, ViewData!);
             }
         }
+
 
         public void OnPostBtClose()
         {
@@ -75,3 +90,4 @@ namespace asp_presentacion.Pages
         }
     }
 }
+

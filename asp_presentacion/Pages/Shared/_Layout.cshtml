@@ -10,53 +10,50 @@
     <link rel="stylesheet" href="~/asp_presentacion.styles.css" asp-append-version="true" />
 </head>
 <body class="d-flex flex-column min-vh-100">
+    @{
+        var usuario = Context.Session.GetString("Usuario");
+    }
+
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">
-                    <img src="~/Imagenes/logom.jpeg" alt="Yamotos" class="navbar-logo" />
-                </a>
-                <button class="navbar-toggler" type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target=".navbar-collapse"
-                        aria-controls="navbarSupportedContent"
-                        aria-expanded="false"
-                        aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Ventanas/Motocicletas">Motocicletas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Ventanas/Facturas">Facturas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Ventanas/Fact_motos">Fact_motos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Ventanas/Tipos">Tipos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Ventanas/Marcas">Marcas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Ventanas/Chasises">Chasises</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Ventanas/Personas">Personas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Ventanas/Referencias">Referencias</a>
-                        </li>
-                    </ul>
+        @if (usuario == "admin")
+        {
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3">
+                <div class="container">
+                    <a class="navbar-brand" asp-area="" asp-page="/Index">
+                        <img src="~/Imagenes/logom.jpeg" alt="Yamotos" class="navbar-logo" />
+                    </a>
+                    <button class="navbar-toggler" type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target=".navbar-collapse"
+                            aria-controls="navbarSupportedContent"
+                            aria-expanded="false"
+                            aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a></li>
+                            <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-page="/Ventanas/Motocicletas">Motocicletas</a></li>
+                            <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-page="/Ventanas/Facturas">Facturas</a></li>
+                            <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-page="/Ventanas/Fact_motos">Fact_motos</a></li>
+                            <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-page="/Ventanas/Tipos">Tipos</a></li>
+                            <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-page="/Ventanas/Marcas">Marcas</a></li>
+                            <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-page="/Ventanas/Chasises">Chasises</a></li>
+                            <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-page="/Ventanas/Personas">Personas</a></li>
+                            <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-page="/Ventanas/Referencias">Referencias</a></li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-        </nav>
+            </nav>
+        }
+        else if (!string.IsNullOrEmpty(usuario))
+        {
+            <nav class="navbar navbar-light bg-light border-bottom box-shadow mb-3">
+                <div class="container">
+                    <span class="navbar-text">Bienvenido</span>
+                </div>
+            </nav>
+        }
     </header>
 
     <main class="flex-fill container pb-3">
@@ -75,3 +72,4 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+

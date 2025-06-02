@@ -130,6 +130,8 @@ namespace asp_presentacion.Pages.Ventanas
             {
                 Accion = Enumerables.Ventanas.Editar;
 
+                decimal precio = Actual!.Precio;
+                Actual.Iva = Math.Round(precio * 0.19M, 2);
                 Actual!.Total = Actual.Precio + Actual.Iva;
 
                 Task<Fact_motos>? task = null;

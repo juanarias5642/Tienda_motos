@@ -23,7 +23,9 @@ namespace lib_repositorios.Implementaciones
         public DbSet<Personas>? Personas { get; set; }
         public DbSet<Referencias>? Referencias { get; set; }
         public DbSet<Tipos>? Tipos { get; set; }
-        public DbSet<Auditorias> Auditorias { get; set; }
+        public DbSet<Auditorias>? Auditorias { get; set; }
+        public DbSet<Roles>? Roles { get; set; }
+        public DbSet<Usuarios>? Usuarios { get; set; }
 
 
 

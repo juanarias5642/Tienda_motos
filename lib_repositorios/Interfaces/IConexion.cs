@@ -17,7 +17,9 @@ namespace lib_repositorios.Interfaces
         DbSet<Personas>? Personas { get; set; }
         DbSet<Referencias>? Referencias { get; set; }
         DbSet<Tipos>? Tipos { get; set; }
-        DbSet<Auditorias> Auditorias { get; set; }
+        DbSet<Auditorias>? Auditorias { get; set; }
+        DbSet<Roles>? Roles { get; set; }
+        DbSet<Usuarios>? Usuarios { get; set; }
 
         EntityEntry<T> Entry<T>(T entity) where T : class;
         int SaveChanges();
