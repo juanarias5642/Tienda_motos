@@ -325,6 +325,7 @@
                                                class="btn btn-secondary"
                                                asp-route-data="@elemento.Id" />
                                     </td>
+
                                 </tr>
                             }
                         }
@@ -332,5 +333,15 @@
                 </div>
             }
         </form>
+        @if (Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Listas)
+        {
+            <a href="http://localhost:5011/Motocicletas/ExportarPdf"
+               class="btn btn-danger"
+               style="margin-top:15px;"
+               target="_blank"
+               rel="noopener noreferrer">
+                Exportar a PDF
+            </a>
+        }
     </div>
 </center>

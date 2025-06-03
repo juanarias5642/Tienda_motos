@@ -1,4 +1,6 @@
 ﻿using asp_servicios.Nucleo;
+using iTextSharp.text.pdf;
+using iTextSharp.text;
 using lib_aplicaciones.Interfaces;
 using lib_dominio.Entidades;
 using lib_dominio.Nucleo;
@@ -175,6 +177,86 @@ namespace asp_servicios.Controllers
             {
                 respuesta["Error"] = ex.Message.ToString();
                 return JsonConversor.ConvertirAString(respuesta);
+            }
+        }
+        [HttpGet]
+        public IActionResult ExportarPdf()
+        {
+            try
+            {
+                // 1. Configuramos la conexión y obtenemos la lista de Motocicletas
+                iAplicacion.Configurar(Configuracion.ObtenerValor("StringConexion")!);
+                List<Motocicletas> listaMotos = iAplicacion.Listar();
+
+                // 2. Creamos el documento PDF en memoria
+                using (var ms = new MemoryStream())
+                {
+                    // a) Creamos un documento iTextSharp con tamaño A4 y márgenes razonables
+                    var document = new Document(PageSize.A4, 25, 25, 30, 30);
+                    PdfWriter.GetInstance(document, ms);
+                    document.Open();
+
+                    // b) Agregamos un título en el PDF
+                    var titulo = new Paragraph("Listado de Motocicletas")
+                    {
+                        Alignment = Element.ALIGN_CENTER,
+                        SpacingAfter = 20f
+                    };
+                    document.Add(titulo);
+
+                    // c) Creamos una tabla con X columnas (tantas como campos queramos mostrar)
+                    //    En este ejemplo: Id, Código, Modelo, Cilindraje, Precio, Color, Tipo, Referencia, Marca, Chasis
+                    //    (Si no te interesan los campos FK, puedes omitirlos o mostrarlos como número)
+                    PdfPTable tabla = new PdfPTable(10)
+                    {
+                        WidthPercentage = 100f
+                    };
+
+                    // d) Agregamos los encabezados (cada celda de encabezado)
+                    tabla.AddCell("Id");
+                    tabla.AddCell("Código Moto");
+                    tabla.AddCell("Modelo");
+                    tabla.AddCell("Cilindraje");
+                    tabla.AddCell("Precio");
+                    tabla.AddCell("Color");
+                    tabla.AddCell("Tipo (FK)");
+                    tabla.AddCell("Referencia (FK)");
+                    tabla.AddCell("Marca (FK)");
+                    tabla.AddCell("Chasis (FK)");
+
+                    // e) Rellenamos filas con los datos de cada motocicleta
+                    foreach (var moto in listaMotos)
+                    {
+                        tabla.AddCell(moto.Id.ToString());
+                        tabla.AddCell(moto.Cod_moto ?? "");
+                        tabla.AddCell(moto.Modelo ?? "");
+                        tabla.AddCell(moto.Cilindraje.ToString());
+                        tabla.AddCell(moto.Precio.ToString("C2"));
+                        tabla.AddCell(moto.Color ?? "");
+                        tabla.AddCell(moto.Tipo.ToString());
+                        tabla.AddCell(moto.Referencia.ToString());
+                        tabla.AddCell(moto.Marca.ToString());
+                        tabla.AddCell(moto.Chasis.ToString());
+                    }
+
+                    // f) Añadimos la tabla al documento y cerramos
+                    document.Add(tabla);
+                    document.Close();
+
+                    // 3. Devolvemos el PDF para descarga
+                    byte[] bytes = ms.ToArray();
+                    string nombreArchivo = $"Motocicletas_{DateTime.Now:yyyyMMdd_HHmmss}.pdf";
+                    return File(
+                        fileContents: bytes,
+                        contentType: "application/pdf",
+                        fileDownloadName: nombreArchivo
+                    );
+                }
+            }
+            catch (Exception ex)
+            {
+                // Si ocurre cualquier excepción, devolvemos un 500 con detalle
+                return StatusCode(500, new { Error = ex.Message });
             }
         }
     }

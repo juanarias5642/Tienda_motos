@@ -12,6 +12,8 @@
     <ProjectReference Include="..\lib_dominio\lib_dominio.csproj" />
 	<ProjectReference Include="..\lib_repositorios\lib_repositorios.csproj" />
 	<ProjectReference Include="..\lib_aplicaciones\lib_aplicaciones.csproj" />
+	<PackageReference Include="ClosedXML" Version="0.105.0" />
+	<PackageReference Include="iTextSharp.LGPLv2.Core" Version="3.7.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.4">
       <PrivateAssets>all</PrivateAssets>
