@@ -273,32 +273,28 @@ body {
 }
 
 .btn-vermas {
-    /* Solo para marcar el botón; podrías dejarlo vacío 
-       ya que el estilo principal viene de Bootstrap (.btn-outline-primary) */
+
 }
 
-/* Contenedor de la imagen emergente: inicialmente oculto */
 .popup-imagen {
-    display: none; /* Oculto por defecto */
-    position: absolute; /* Para posicionarlo sobre la tarjeta */
-    top: 10px; /* Ajusta este valor según tu diseño */
-    left: 50%; /* Lo centramos horizontalmente */
-    transform: translateX(-50%); /* Ajuste fino del centrado */
-    width: 280px; /* Ancho fijo de la imagen emergente */
-    background-color: var(--white); /* Fondo blanco (o var(--gray-light) si prefieres) */
-    border: 1px solid var(--gray-medium); /* Borde suave */
-    padding: 5px; /* Espacio interno */
-    z-index: 100; /* Para superponerlo */
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15); /* Sombra ligera */
+    display: none; 
+    position: absolute; 
+    top: 10px; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    width: 280px; 
+    background-color: var(--white);
+    border: 1px solid var(--gray-medium); 
+    padding: 5px; 
+    z-index: 100; 
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15); 
 }
 
-/* Cuando el mouse esté sobre el botón .btn-vermas, mostramos 
-   el .popup-imagen que viene justo después en el HTML */
+
 .btn-vermas:hover + .popup-imagen {
     display: block;
 }
 
-/* También, si el mouse está sobre la propia imagen emergente, que no se oculte */
 .popup-imagen:hover {
     display: block;
 }
