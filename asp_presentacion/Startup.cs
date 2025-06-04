@@ -29,6 +29,7 @@ namespace asp_presentacion
             services.AddScoped<IFacturasPresentacion, FacturasPresentacion>();
             services.AddScoped<IFact_motosPresentacion, Fact_motosPresentacion>();
             services.AddScoped<IAuditoriasPresentacion, AuditoriasPresentacion>();
+            services.AddScoped<IUsuariosPresentacion, UsuariosPresentacion>();
 
             services.AddControllers();
             services.AddEndpointsApiExplorer();
